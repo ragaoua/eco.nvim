@@ -3,10 +3,12 @@
 -- TODO: write tests
 
 local eco = {}
+local keymaps = require("eco.keymaps")
 
 --- Requires the plugin and sets up default keymaps
 eco.setup = function()
 	require("eco")
+	keymaps.setup()
 end
 
 --- Execute a shell command and paste its standard output at the cursor position.
