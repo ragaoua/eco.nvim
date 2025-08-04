@@ -1,6 +1,6 @@
--- TODO: choose better names for functions
--- TODO: display information about a command in progress (spinner, dots...) on the status line
+-- TODO: display information about a command in progress (spinner, dous...) on the status line
 -- TODO: fix command options being interpreted as literals (e.g : "echo -n ok" prints "-n ok\n" instead of "ok")
+-- TODO: add support for interpreters other than the default shell (?)
 
 local M = {}
 
@@ -9,10 +9,15 @@ M.setup = function()
 	local eco = require("eco")
 
 	vim.keymap.set("n", "<leader>x", function()
-		eco.run({ insert_before = true })
+		eco.prompt_for_command({ insert_before = true })
 	end, { desc = "[ECO] Insert command output before the current cursor position" })
 
-	vim.keymap.set("n", "<leader>X", eco.run, { desc = "[ECO] Insert command output at the current cursor position" })
+	vim.keymap.set(
+		"n",
+		"<leader>X",
+		eco.prompt_for_command,
+		{ desc = "[ECO] Insert command output at the current cursor position" }
+	)
 end
 
 --- Execute a shell command and paste its standard output at the cursor position.
@@ -24,7 +29,7 @@ end
 ---
 --- @param cmd string The shell command to execute
 --- @param opts? EcoOptions Options
-M.execute = function(cmd, opts)
+M.insert_command_output = function(cmd, opts)
 	vim.system({ "sh", "-c", cmd }, {}, function(result)
 		if result.code ~= 0 then
 			error(string.format("Command '%s' failed with exit code %d :\n%s", cmd, result.code, result.stderr))
@@ -45,10 +50,10 @@ M.execute = function(cmd, opts)
 	end)
 end
 
---- Prompts the user for a shell command and passes it to `execute`.
+--- Prompts the user for a shell command and passes it to `insert_command_output`.
 ---
---- @param opts? EcoOptions Options passed to `execute`.
-M.run = function(opts)
+--- @param opts? EcoOptions Options passed to `insert_command_output`.
+M.prompt_for_command = function(opts)
 	vim.ui.input({
 		prompt = "Execute : ",
 		completion = "shellcmdline",
@@ -56,7 +61,7 @@ M.run = function(opts)
 		if not input or #input == 0 then
 			return
 		end
-		M.execute(input, opts)
+		M.insert_command_output(input, opts)
 	end)
 end
 
