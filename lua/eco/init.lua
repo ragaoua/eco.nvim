@@ -6,18 +6,7 @@ local eco = {}
 
 --- Requires the plugin and sets up default keymaps
 eco.setup = function()
-	local eco = require("eco")
-
-	vim.keymap.set("n", "<leader>x", function()
-		eco.prompt_for_command({ insert_before = true })
-	end, { desc = "[ECO] Insert command output before the current cursor position" })
-
-	vim.keymap.set(
-		"n",
-		"<leader>X",
-		eco.prompt_for_command,
-		{ desc = "[ECO] Insert command output at the current cursor position" }
-	)
+	require("eco")
 end
 
 --- Execute a shell command and paste its standard output at the cursor position.
@@ -29,7 +18,7 @@ end
 ---
 --- @param cmd string The shell command to execute
 --- @param opts? EcoOptions Options
-eco.insert_command_output = function(cmd, opts)
+eco._insert_command_output = function(cmd, opts)
 	local shell = os.getenv("SHELL") or "sh"
 
 	vim.system({ shell, "-c", cmd }, {}, function(result)
@@ -57,7 +46,7 @@ end
 --- Prompts the user for a shell command and passes it to `insert_command_output`.
 ---
 --- @param opts? EcoOptions Options passed to `insert_command_output`.
-eco.prompt_for_command = function(opts)
+eco._prompt_for_command = function(opts)
 	vim.ui.input({
 		prompt = "Execute : ",
 		completion = "shellcmdline",
@@ -65,7 +54,7 @@ eco.prompt_for_command = function(opts)
 		if not input or #input == 0 then
 			return
 		end
-		eco.insert_command_output(input, opts)
+		eco._insert_command_output(input, opts)
 	end)
 end
 
