@@ -44,7 +44,9 @@ eco.insert_command_output = function(cmd, opts)
 			if opts.insert_before then
 				local cursor_position = vim.api.nvim_win_get_cursor(0)
 				local row, col = cursor_position[1], cursor_position[2]
-				vim.api.nvim_win_set_cursor(0, { row, col - 1 })
+				if col > 0 then
+					vim.api.nvim_win_set_cursor(0, { row, col - 1 })
+				end
 			end
 
 			vim.api.nvim_paste(result.stdout, false, -1)
