@@ -41,7 +41,18 @@ It is possible to skip the prompting of the shell command by providing it direct
 
 Note : these defaults are motivated by the way pasting works in vim. `p` pastes text at the cursor position. `P` pastes it before the cursor. Hence, `x` and `X`.
 
+Default mappings can be ignored using the `ignore_default_keymaps` configuration option :
+
+```lua
+{
+    "ragaoua/eco.nvim",
+    opts = {
+        ignore_default_keymaps = true,
+    },
+}
+```
 
 ## Shell behavior
 
 By default, `eco.nvim` uses the shell defined by the environment variable `$SHELL` (e.g. `/bin/bash`, `/bin/zsh`, etc.) when executing commands. If `$SHELL` is not set, it falls back to `sh`.
+
