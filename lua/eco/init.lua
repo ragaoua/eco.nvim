@@ -1,11 +1,11 @@
 -- TODO: display information about a command in progress (spinner, dous...) on the status line
--- TODO: fix command options being interpreted as literals (e.g : "echo -n ok" prints "-n ok\n" instead of "ok")
 -- TODO: add support for interpreters other than the default shell (?)
+-- TODO: write tests
 
-local M = {}
+local eco = {}
 
 --- Requires the plugin and sets up default keymaps
-M.setup = function()
+eco.setup = function()
 	local eco = require("eco")
 
 	vim.keymap.set("n", "<leader>x", function()
@@ -29,8 +29,10 @@ end
 ---
 --- @param cmd string The shell command to execute
 --- @param opts? EcoOptions Options
-M.insert_command_output = function(cmd, opts)
-	vim.system({ "sh", "-c", cmd }, {}, function(result)
+eco.insert_command_output = function(cmd, opts)
+	local shell = os.getenv("SHELL") or "sh"
+
+	vim.system({ shell, "-c", cmd }, {}, function(result)
 		if result.code ~= 0 then
 			error(string.format("Command '%s' failed with exit code %d :\n%s", cmd, result.code, result.stderr))
 			return
@@ -53,7 +55,7 @@ end
 --- Prompts the user for a shell command and passes it to `insert_command_output`.
 ---
 --- @param opts? EcoOptions Options passed to `insert_command_output`.
-M.prompt_for_command = function(opts)
+eco.prompt_for_command = function(opts)
 	vim.ui.input({
 		prompt = "Execute : ",
 		completion = "shellcmdline",
@@ -61,8 +63,8 @@ M.prompt_for_command = function(opts)
 		if not input or #input == 0 then
 			return
 		end
-		M.insert_command_output(input, opts)
+		eco.insert_command_output(input, opts)
 	end)
 end
 
-return M
+return eco
