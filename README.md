@@ -1,0 +1,47 @@
+# eco.nvim
+
+**eco.nvim** (Enter Command Output) is a lightweight Neovim plugin that lets you run shell commands and insert their output directly into your buffer. Ideal for capturing the result of quick shell one-liners without leaving your editor.
+
+## Features
+
+- Prompt for a shell command and insert its output at or before the cursor position
+- Uses the user's default shell (`$SHELL`)
+
+## Installation
+
+Using [lazy.nvim](https://github.com/folke/lazy.nvim):
+
+```lua
+{ "ragaoua/eco.nvim" }
+```
+
+Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
+
+```lua
+use { "ragaoua/eco.nvim" }
+```
+
+## Usage
+
+### User commands
+
+The plugin defines the `:Eco` and `:EcoBefore` commands.
+
+`:Eco` prompt for a shell command, executes it and inserts the output at the cursor position.
+It is possible to skip the prompting of the shell command by providing it directly to `:Eco`, like so : `:Eco echo "this will be inserted"`.
+
+`:EcoBefore` behaves strictly like `:Eco`, except it moves the cursor one column to the left before inserting the output of the command.
+
+### Default mappings
+
+| Keymap      | Command    |
+|-------------|------------|
+| `<leader>x` | :Eco       |
+| `<leader>X` | :EcoBefore |
+
+Note : these defaults are motivated by the way pasting works in vim. `p` pastes text at the cursor position. `P` pastes it before the cursor. Hence, `x` and `X`.
+
+
+## Shell behavior
+
+By default, `eco.nvim` uses the shell defined by the environment variable `$SHELL` (e.g. `/bin/bash`, `/bin/zsh`, etc.) when executing commands. If `$SHELL` is not set, it falls back to `sh`.
