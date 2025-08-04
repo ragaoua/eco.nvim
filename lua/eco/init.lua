@@ -15,11 +15,11 @@ end
 --- The command is executed asynchronously. The "cursor position" refers to the
 --- position at the time the command finishes
 ---
---- @class EcoOptions
+--- @class CmdOptions
 --- @field insert_before? boolean If true, inserts before the current cursor position instead of the at current position
 ---
 --- @param cmd string The shell command to execute
---- @param opts? EcoOptions Options
+--- @param opts? CmdOptions Options
 eco._insert_command_output = function(cmd, opts)
 	local shell = os.getenv("SHELL") or "sh"
 
@@ -47,7 +47,7 @@ end
 
 --- Prompts the user for a shell command and passes it to `insert_command_output`.
 ---
---- @param opts? EcoOptions Options passed to `insert_command_output`.
+--- @param opts? CmdOptions Options passed to `insert_command_output`.
 eco._prompt_for_command = function(opts)
 	vim.ui.input({
 		prompt = "Execute : ",
