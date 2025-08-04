@@ -3,12 +3,21 @@
 -- TODO: write tests
 
 local eco = {}
-local keymaps = require("eco.keymaps")
 
 --- Requires the plugin and sets up default keymaps
-eco.setup = function()
+---
+--- @class PluginOptions
+--- @field ignore_default_keymaps? boolean If true, do not set default keymaps
+---
+--- @param opts? PluginOptions
+eco.setup = function(opts)
 	require("eco")
-	keymaps.setup()
+	opts = opts or {}
+
+	if not opts.ignore_default_keymaps then
+		local keymaps = require("eco.keymaps")
+		keymaps.setup()
+	end
 end
 
 --- Execute a shell command and paste its standard output at the cursor position.
