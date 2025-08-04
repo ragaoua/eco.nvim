@@ -5,7 +5,7 @@
 --- If arguments are provided, it executes the command directly.
 ---
 --- @param createUserCmdOpts vim.api.keyset.create_user_command.command_args The options passed from `vim.api.nvim_create_user_command`,
---- @param ecoOpts? table Options passed to the `eco` module (e.g., `{ insert_before = true }`)
+--- @param ecoOpts? CmdOptions Options passed to the `eco` module (e.g., `{ insert_before = true }`)
 local prompt_or_execute_command = function(createUserCmdOpts, ecoOpts)
 	local eco = require("eco")
 	if #createUserCmdOpts.fargs == 0 then
