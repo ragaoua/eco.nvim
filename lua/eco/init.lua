@@ -3,7 +3,7 @@
 -- TODO: write tests
 -- TODO: handle piping
 -- TODO: support executing selected command / current line command
--- TODO: change the prompt to display information about the shell (e.g. "bash> ")
+-- TODO: do all SHELLs support "-c" ?
 
 local eco = {}
 
@@ -29,10 +29,9 @@ end
 --- @param cmd string The shell command to execute
 --- @param row_idx integer 0-indexed line position at which the output will be inserted
 --- @param col_idx integer 0-indexed column position at which the output will be inserted
+--- @param shell string shell interpreter for running the command
 ---
-eco._insert_command_output = function(cmd, row_idx, col_idx)
-	local shell = os.getenv("SHELL") or "sh"
-
+eco._insert_command_output = function(cmd, row_idx, col_idx, shell)
 	vim.system({ shell, "-c", cmd }, {}, function(result)
 		if result.code ~= 0 then
 			error(string.format("Command '%s' failed with exit code %d :\n%s", cmd, result.code, result.stderr))
@@ -46,15 +45,18 @@ eco._insert_command_output = function(cmd, row_idx, col_idx)
 	end)
 end
 
---- Prompt the user for a shell command, execute it and insert the output after the current cursor position
+--- Prompt the user for a shell command, execute it and insert the output after the current cursor position.
+--- The command is executed by the user's shell (identified by the `SHELL` env variable). If unset, use `sh`.
 ---
 --- @class CmdOptions
 --- @field insert_before? boolean If true, inserts before the current cursor position instead of the at current position
 ---
 --- @param opts? CmdOptions Options
 eco._prompt_for_command = function(opts)
+	local shell = os.getenv("SHELL") or "sh"
+
 	vim.ui.input({
-		prompt = "Execute : ",
+		prompt = shell .. "> ",
 		completion = "shellcmdline",
 	}, function(input)
 		if not input or #input == 0 then
@@ -73,7 +75,7 @@ eco._prompt_for_command = function(opts)
 			col_idx = col_idx - 1
 		end
 
-		eco._insert_command_output(input, row_idx, col_idx)
+		eco._insert_command_output(input, row_idx, col_idx, shell)
 	end)
 end
 
