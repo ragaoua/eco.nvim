@@ -26,12 +26,12 @@ end
 --- Execute a shell command and paste its standard output at a given position.
 --- The command is executed asynchronously.
 ---
+--- @param shell string shell interpreter for running the command
 --- @param cmd string The shell command to execute
 --- @param row_idx integer 0-indexed line position at which the output will be inserted
 --- @param col_idx integer 0-indexed column position at which the output will be inserted
---- @param shell string shell interpreter for running the command
 ---
-eco._insert_command_output = function(cmd, row_idx, col_idx, shell)
+eco._insert_command_output = function(shell, cmd, row_idx, col_idx)
 	vim.system({ shell, "-c", cmd }, {}, function(result)
 		if result.code ~= 0 then
 			error(string.format("Command '%s' failed with exit code %d :\n%s", cmd, result.code, result.stderr))
@@ -75,7 +75,7 @@ eco._prompt_for_command = function(opts)
 			col_idx = col_idx - 1
 		end
 
-		eco._insert_command_output(input, row_idx, col_idx, shell)
+		eco._insert_command_output(shell, input, row_idx, col_idx)
 	end)
 end
 
