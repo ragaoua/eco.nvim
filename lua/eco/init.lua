@@ -1,6 +1,9 @@
--- TODO: display information about a command in progress (spinner, dous...) on the status line
+-- TODO: display information about a command in progress (spinner, dots...) on the status line
 -- TODO: add support for interpreters other than the default shell (?)
 -- TODO: write tests
+-- TODO: handle piping
+-- TODO: support executing selected command / current line command
+-- TODO: change the prompt to display information about the shell (e.g. "bash> ")
 
 local eco = {}
 
@@ -20,16 +23,14 @@ eco.setup = function(opts)
 	end
 end
 
---- Execute a shell command and paste its standard output at the cursor position.
---- The command is executed asynchronously. The "cursor position" refers to the
---- position at the time the command finishes
----
---- @class CmdOptions
---- @field insert_before? boolean If true, inserts before the current cursor position instead of the at current position
+--- Execute a shell command and paste its standard output at a given position.
+--- The command is executed asynchronously.
 ---
 --- @param cmd string The shell command to execute
---- @param opts? CmdOptions Options
-eco._insert_command_output = function(cmd, opts)
+--- @param row_idx integer 0-indexed line position at which the output will be inserted
+--- @param col_idx integer 0-indexed column position at which the output will be inserted
+---
+eco._insert_command_output = function(cmd, row_idx, col_idx)
 	local shell = os.getenv("SHELL") or "sh"
 
 	vim.system({ shell, "-c", cmd }, {}, function(result)
@@ -38,28 +39,19 @@ eco._insert_command_output = function(cmd, opts)
 			return
 		end
 
+		local lines = vim.split(result.stdout, "\n", { plain = true })
 		vim.schedule(function()
-			opts = opts or {}
-
-			local cursor_position = vim.api.nvim_win_get_cursor(0)
-			-- col = cursor_position[2] + 1 > insert after cursor by default.
-			-- This is to stay consistent with the way vim pastes text using `p` in normal mode.
-			local row, col = cursor_position[1], cursor_position[2] + 1
-			if opts.insert_before then
-				if col > 0 then
-					col = col - 1
-				end
-			end
-
-			local lines = vim.split(result.stdout, "\n", { plain = true })
-			vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, lines)
+			vim.api.nvim_buf_set_text(0, row_idx, col_idx, row_idx, col_idx, lines)
 		end)
 	end)
 end
 
---- Prompts the user for a shell command and passes it to `insert_command_output`.
+--- Prompt the user for a shell command, execute it and insert the output after the current cursor position
 ---
---- @param opts? CmdOptions Options passed to `insert_command_output`.
+--- @class CmdOptions
+--- @field insert_before? boolean If true, inserts before the current cursor position instead of the at current position
+---
+--- @param opts? CmdOptions Options
 eco._prompt_for_command = function(opts)
 	vim.ui.input({
 		prompt = "Execute : ",
@@ -68,7 +60,20 @@ eco._prompt_for_command = function(opts)
 		if not input or #input == 0 then
 			return
 		end
-		eco._insert_command_output(input, opts)
+
+		local cursor_position = vim.api.nvim_win_get_cursor(0)
+
+		-- vim.api.nvim_win_get_cursor(...)[1] is the 1-indexed cursor row position
+		local row_idx = cursor_position[1] - 1
+		-- Insert after cursor by default (stays consistent with the way vim pastes text using `p` in normal mode).
+		local col_idx = cursor_position[2] + 1
+
+		opts = opts or {}
+		if opts.insert_before and col_idx > 0 then
+			col_idx = col_idx - 1
+		end
+
+		eco._insert_command_output(input, row_idx, col_idx)
 	end)
 end
 
