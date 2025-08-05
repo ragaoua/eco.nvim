@@ -41,15 +41,18 @@ eco._insert_command_output = function(cmd, opts)
 		vim.schedule(function()
 			opts = opts or {}
 
+			local cursor_position = vim.api.nvim_win_get_cursor(0)
+			-- col = cursor_position[2] + 1 > insert after cursor by default.
+			-- This is to stay consistent with the way vim pastes text using `p` in normal mode.
+			local row, col = cursor_position[1], cursor_position[2] + 1
 			if opts.insert_before then
-				local cursor_position = vim.api.nvim_win_get_cursor(0)
-				local row, col = cursor_position[1], cursor_position[2]
 				if col > 0 then
-					vim.api.nvim_win_set_cursor(0, { row, col - 1 })
+					col = col - 1
 				end
 			end
 
-			vim.api.nvim_paste(result.stdout, false, -1)
+			local lines = vim.split(result.stdout, "\n", { plain = true })
+			vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, lines)
 		end)
 	end)
 end
