@@ -65,15 +65,15 @@ One notable use case is being able to paste system clipboard when no other optio
 
 ### Insert content from a file (e.g. log file, config file, script...)
 
-![plugin preview 1](https://imgur.com/briuS3w)
+![plugin preview 1](https://i.imgur.com/briuS3w.gif)
 
 ### Insert useful command outputs (e.g. directory filetree, system info...)
 
-![plugin preview 2](https://imgur.com/0vRrz96)
+![plugin preview 2](https://i.imgur.com/0vRrz96.gif)
 
 This can be useful to write bug reports for instance.
 
 ### Pretty print json strings
 
-![plugin preview 3](https://imgur.com/SiJXuuD)
+![plugin preview 3](https://i.imgur.com/SiJXuuD.gif)
 
