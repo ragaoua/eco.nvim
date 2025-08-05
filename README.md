@@ -1,6 +1,6 @@
 # eco.nvim
 
-**eco.nvim** (Enter Command Output) is a lightweight Neovim plugin that lets you run shell commands and insert their output directly into your buffer. Ideal for capturing the result of quick shell one-liners without leaving your editor.
+**eco.nvim** is a lightweight Neovim plugin that lets you run shell commands and insert their output directly into your buffer. Ideal for capturing the result of quick shell one-liners without leaving your editor.
 
 ## Features
 
@@ -54,5 +54,26 @@ Default mappings can be ignored using the `ignore_default_keymaps` configuration
 
 ## Shell behavior
 
-By default, `eco.nvim` uses the shell defined by the environment variable `$SHELL` (e.g. `/bin/bash`, `/bin/zsh`, etc.) when executing commands. If `$SHELL` is not set, it falls back to `sh`.
+By default, **eco.nvim** uses the shell defined by the `SHELL` environment variable (e.g. `/bin/bash`, `/bin/zsh`, ...) when executing commands. If `SHELL` is not set, it falls back to `sh`.
+
+
+## Use cases
+
+**eco.nvim** is particularly useful when writing documentation (e.g. code tutorials). Below are some examples.
+
+One notable use case is being able to paste system clipboard when no other option is available (via `xclip -o` on Linux or `pbpaste` on macOs).
+
+### Insert content from a file (e.g. log file, config file, script...)
+
+![plugin preview 1](https://imgur.com/briuS3w)
+
+### Insert useful command outputs (e.g. directory filetree, system info...)
+
+![plugin preview 2](https://imgur.com/0vRrz96)
+
+This can be useful to write bug reports for instance.
+
+### Pretty print json strings
+
+![plugin preview 3](https://imgur.com/SiJXuuD)
 
