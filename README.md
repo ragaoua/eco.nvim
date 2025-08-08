@@ -55,6 +55,7 @@ Default mappings can be ignored using the `ignore_default_keymaps` configuration
 ## Shell behavior
 
 By default, **eco.nvim** uses the shell defined by the `SHELL` environment variable (e.g. `/bin/bash`, `/bin/zsh`, ...) when executing commands. If `SHELL` is not set, it falls back to `sh`.
+Only POSIX-compliant shells are fully supported. Some non-POSIX shells (`fish`, `csh`...) might still work if they implement the `-c` flag (which is used to execute commands), but those aren't guaranteed.
 
 
 ## Use cases
