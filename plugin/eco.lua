@@ -16,13 +16,13 @@ local prompt_or_execute_command = function(createUserCmdOpts, insert_after)
 end
 
 vim.api.nvim_create_user_command("Eco", function(opts)
-	prompt_or_execute_command(opts, false)
+	prompt_or_execute_command(opts, true)
 end, {
 	nargs = "*",
 })
 
 vim.api.nvim_create_user_command("EcoBefore", function(opts)
-	prompt_or_execute_command(opts, true)
+	prompt_or_execute_command(opts, false)
 end, {
 	nargs = "*",
 })
