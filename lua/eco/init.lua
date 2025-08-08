@@ -1,10 +1,3 @@
--- TODO: display information about a command in progress (spinner, dots...) on the status line
--- TODO: add support for interpreters other than the default shell (?)
--- TODO: write tests
--- TODO: handle piping
--- TODO: support executing selected command / current line command
--- TODO: do all SHELLs support "-c" ?
-
 local eco = {}
 
 --- Requires the plugin and sets up default keymaps
