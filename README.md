@@ -2,9 +2,15 @@
 
 **eco.nvim** is a lightweight Neovim plugin that lets you run shell commands and insert their output directly into your buffer. Ideal for capturing the result of quick shell one-liners without leaving your editor.
 
+Neovim already has similar features via the `:r` command and the `!!` keymap (which maps to the `:.!` command), but they have some shortcomings:
+- They only allow you to insert or replace whole lines: `!!` replaces the current line with the output of a command, and `:r` inserts the output on a new line.
+  **eco.nvim** operates differently, as it inserts the output onto the current line, either at or after the _cursor_ position. See [Use cases](#use-cases).
+- They do not detect error codes or differentiate between stdout and stderr. If the command fails, its error message is inserted just like normal output (which you don't want, usually).
+  Instead, **eco.nvim** won't insert anything if the command returns a non-zero exit code, and outputs the error message in the command area.
+
 ## Features
 
-- Prompt for a shell command and insert its output at or before the cursor position
+- Prompt for a shell command and insert its output at or after the cursor position
 - Uses the user's default shell (`$SHELL`)
 
 ## Installation
@@ -39,9 +45,9 @@ It is possible to skip the prompting of the shell command by providing it direct
 | `<leader>x` | :Eco       |
 | `<leader>X` | :EcoAppend |
 
-Note : these defaults are motivated by the way pasting works in vim. `p` pastes text at the cursor position. `P` pastes it before the cursor. Hence, `x` and `X`.
+note: these defaults are motivated by the way pasting works in vim. `p` pastes text at the cursor position. `P` pastes it before the cursor. Hence, `x` and `X`.
 
-Default mappings can be ignored using the `ignore_default_keymaps` configuration option :
+Default mappings can be ignored using the `ignore_default_keymaps` configuration option:
 
 ```lua
 {
