@@ -25,19 +25,19 @@ use { "ragaoua/eco.nvim" }
 
 ### User commands
 
-The plugin defines the `:Eco` and `:EcoBefore` commands.
+The plugin defines the `:Eco` and `:EcoAppend` commands.
 
 `:Eco` prompt for a shell command, executes it and inserts the output at the cursor position.
 It is possible to skip the prompting of the shell command by providing it directly to `:Eco`, like so : `:Eco echo "this will be inserted"`.
 
-`:EcoBefore` behaves strictly like `:Eco`, except it moves the cursor one column to the left before inserting the output of the command.
+`:EcoAppend` behaves strictly like `:Eco`, except it inserts the output after the current cursor position the command.
 
 ### Default mappings
 
 | Keymap      | Command    |
 |-------------|------------|
 | `<leader>x` | :Eco       |
-| `<leader>X` | :EcoBefore |
+| `<leader>X` | :EcoAppend |
 
 Note : these defaults are motivated by the way pasting works in vim. `p` pastes text at the cursor position. `P` pastes it before the cursor. Hence, `x` and `X`.
 

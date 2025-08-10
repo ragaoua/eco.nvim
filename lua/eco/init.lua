@@ -20,7 +20,7 @@ end
 --- The command is executed asynchronously.
 ---
 --- @param cmd string The shell command to execute
---- @param insert_after boolean If true, insert after cursor. if false, insert before cursor
+--- @param insert_after boolean If true, insert after cursor. if false, insert at/before cursor
 --- @param shell? string Shell interpreter for running the command. If not provided, use the user's default shell. If not set, use "sh"
 ---
 eco._insert_command_output = function(cmd, insert_after, shell)
@@ -42,7 +42,7 @@ end
 --- Prompt the user for a shell command, execute it and insert the output after the current cursor position.
 --- The command is executed by the user's shell (identified by the `SHELL` env variable). If unset, use `sh`.
 ---
---- @param insert_after boolean If true, insert after cursor. if false, insert before cursor
+--- @param insert_after boolean If true, insert after cursor. if false, insert at/before cursor
 eco._prompt_for_command = function(insert_after)
 	local shell = os.getenv("SHELL") or "sh"
 

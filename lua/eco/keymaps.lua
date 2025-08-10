@@ -4,8 +4,8 @@ keymaps.setup = function()
 	vim.keymap.set(
 		"n",
 		"<leader>X",
-		":EcoBefore<CR>",
-		{ desc = "[ECO] Insert command output before the current cursor position" }
+		":EcoAppend<CR>",
+		{ desc = "[ECO] Insert command output after the current cursor position" }
 	)
 
 	vim.keymap.set(
